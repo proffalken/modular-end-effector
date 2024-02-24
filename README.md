@@ -10,6 +10,7 @@ Each example effector will contain the following in the module directory:
   2. An example of the messages the module sends and receives, validated against the schema where appropriate
   3. STL Files for any 3D printed parts wher eprovided by the author
 
+Details on the interface that should be connected to the end of the robot arm can be found in the `interface` directory.
 ## Contributing
 
 ### Required Tooling
