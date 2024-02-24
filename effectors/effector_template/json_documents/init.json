@@ -1,0 +1,23 @@
+{
+    "effector_type": "example_effector",
+    "actuators": [
+        {
+            "actuator_type": "servo",
+            "default_value": 90,
+            "minimum_value": 0,
+            "maximum_value": 180
+        },
+        {
+            "actuator_type": "motor",
+            "default_value": 0,
+            "minimum_value": 0,
+            "maximum_value": 255
+        },
+        {
+            "actuator_type": "relay",
+            "default_value": 0,
+            "minimum_value": 0,
+            "maximum_value": 1
+        }
+    ]
+}
