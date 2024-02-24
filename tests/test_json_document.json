@@ -1,0 +1,11 @@
+{
+    "effector_type": "test_effector",
+    "actuators": [
+        {
+            "actuator_type": "servo",
+            "default_value": 90,
+            "minimum_value": 0,
+            "maximum_value": 180
+        }
+    ]
+}

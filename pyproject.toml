@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "modular-end-effectors"
+version = "0.1.0"
+description = "A library of modular end effectors for robot arms"
+authors = ["Matthew Macdonald-Wallace <matt@doics.co>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "modular_end_effectors"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+platformio = "^6.1.13"
+fastjsonschema = "^2.19.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

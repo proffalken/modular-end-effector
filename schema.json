@@ -3,5 +3,36 @@
   "$id": "https://raw.githubusercontent.com/proffalken/modular-end-effector/main/schema.json",
   "title": "Modular End Effector",
   "description": "A modular system to control the end effectors for robot arms",
-  "type": "object"
+  "type": "object",
+  "properties": {
+      "effector_type": {
+          "type": "string",
+          "description": "The type of effector. This is entirely up to you, it could be called `motor`, `servo`, or even `hairbrush` depending on what it does."
+      },
+      "actuators": {
+          "type": "array",
+          "description": "An array of objects, one object per attached actuator",
+          "actuator": {
+              "type": "object",
+              "actuator_type": {
+                 "type":  "string",
+                 "description": "The type of actuator. This could be a servo, a motor, or anything you want, it's used by the rest of the system to work out how to interact with it"
+              },
+              "default_value": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "description": "What value does this actuator have by default?"
+              },
+              "minimum_value": {
+                  "type": "integer",
+                  "description": "The minimum value this actuator will accept"
+              },
+              "maximum_value": {
+                  "type": "integer",
+                  "description": "The maximum value this actuator will accept"
+              }
+          }
+      }
+  }
 }
+
