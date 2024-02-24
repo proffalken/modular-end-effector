@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/proffalken/modular-end-effector/main/schema.json",
+  "title": "Modular End Effector",
+  "description": "A modular system to control the end effectors for robot arms",
+  "type": "object"
+}
