@@ -1,0 +1,5 @@
+{
+    "actuator_type": "relay",
+    "actuator_port_id": 9,
+    "value": 1
+}

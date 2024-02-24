@@ -1,0 +1,5 @@
+{
+    "actuator_type": "motor",
+    "actuator_port_id": 1,
+    "value": 128
+}
