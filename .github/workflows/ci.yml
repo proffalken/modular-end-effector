@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  # ── Native unit tests (Frame + Schema) ──────────────────────────────────────
+  test-native:
+    name: Native unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            ~/.cache/pip
+          key: pio-native-${{ hashFiles('platformio.ini') }}
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Run native tests
+        run: pio test -e native -v
+
+  # ── ESP32-C3 build verification ──────────────────────────────────────────────
+  build-esp32c3:
+    name: Build for ESP32-C3
+    runs-on: ubuntu-latest
+    env:
+      WIFI_SSID: "ci-placeholder"
+      WIFI_PASS: "ci-placeholder"
+      OTEL_COLLECTOR_HOST: "127.0.0.1"
+      OTEL_COLLECTOR_PORT: "4318"
+      OTEL_SERVICE_NAME: "msc-ci"
+      OTEL_SERVICE_NAMESPACE: "ci"
+      OTEL_SERVICE_VERSION: "0.0.0"
+      OTEL_SERVICE_INSTANCE: "ci-build"
+      OTEL_DEPLOY_ENV: "ci"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            ~/.cache/pip
+          key: pio-esp32c3-${{ hashFiles('platformio.ini') }}
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Build library for ESP32-C3
+        run: pio run -e esp32-c3
+
+      - name: Build protocol tests for ESP32-C3 (compilation check)
+        run: pio test -e esp32-c3 --without-uploading --without-testing -v

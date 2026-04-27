@@ -1,0 +1,6 @@
+.pio/
+.vscode/
+*.env
+!.env.sample
+__pycache__/
+*.pyc
