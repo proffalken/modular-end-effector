@@ -4,7 +4,6 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include <functional>
-#include <optional>
 #include "MSC/Frame.h"
 #include "MSC/Schema.h"
 
@@ -69,9 +68,9 @@ private:
         bool     active    = false;
 #ifdef MSC_OTEL_ENABLED
         // Saved context so we can restore it cleanly after the span ends
-        String savedTraceId;
-        String savedSpanId;
-        std::optional<OTel::Span> span;
+        String      savedTraceId;
+        String      savedSpanId;
+        OTel::Span* span = nullptr;
 #endif
     };
     InflightCmd _inflight[MSC_MAX_INFLIGHT];

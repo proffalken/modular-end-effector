@@ -240,9 +240,13 @@ int MountNode::_findSlotById(const char* id) const {
 }
 
 void MountNode::_freeSlot(int slot) {
-    _inflight[slot].active    = false;
-    _inflight[slot].id[0]     = '\0';
-    _inflight[slot].startMs   = 0;
+    _inflight[slot].active  = false;
+    _inflight[slot].id[0]   = '\0';
+    _inflight[slot].startMs = 0;
+#ifdef MSC_OTEL_ENABLED
+    delete _inflight[slot].span;
+    _inflight[slot].span = nullptr;
+#endif
 }
 
 // ── OTel span management ──────────────────────────────────────────────────────
@@ -265,20 +269,22 @@ void MountNode::_beginCommandSpan(int slot, const char* cmdName,
 
     // Start the mount's child span — Span constructor captures the Pi context
     // as parent and installs the mount's own spanId as current
-    _inflight[slot].span.emplace("command.forward");
+    delete _inflight[slot].span; // defensive: shouldn't be set, but be safe
+    _inflight[slot].span = new OTel::Span("command.forward");
     _inflight[slot].span->setAttribute("command.id",   String(cmdId));
     _inflight[slot].span->setAttribute("command.name", String(cmdName));
 }
 
 void MountNode::_endCommandSpan(int slot, bool ok) {
-    if (!_inflight[slot].span.has_value()) return;
+    if (!_inflight[slot].span) return;
 
     uint32_t dur = millis() - _inflight[slot].startMs;
     _inflight[slot].span->setAttribute("success", ok);
     _inflight[slot].span->setAttribute(
         "duration_ms", static_cast<int64_t>(dur));
     _inflight[slot].span->end();
-    _inflight[slot].span.reset();
+    delete _inflight[slot].span;
+    _inflight[slot].span = nullptr;
 
     // span.end() restored Pi's context; now restore what was there before Pi's
     OTel::currentTraceContext().traceId = _inflight[slot].savedTraceId;
